@@ -1,23 +1,16 @@
 <?php
 
-    // $banco = new mysqli("localhost", "root", "", "php-segunda-noite");
-    
-    abstract class Banco {
-        private static $conn;
+$host = 'localhost';
+$dbname = 'receitas';
+$user = 'root';
+$pass = '';
 
-        public static function getConn()
-        {
-            if (!isset(self::$conn)) {
-                self::$conn = new mysqli("localhost", "root", "", "php-segunda-noite");
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erro ao conectar: " . $e->getMessage());
+}
 
-                // Verifica se houve erro de conexão
-                if (self::$conn->connect_error) {
-                    die("Erro ao conectar ao banco: " . self::$conn->connect_error);
-                }
-            }
-
-            return self::$conn;
-        }
-    }
 
 ?>
