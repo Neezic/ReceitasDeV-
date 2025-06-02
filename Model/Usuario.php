@@ -1,19 +1,19 @@
 <?php
     class Usuario{
         private $pdo;
-        private $tabela = 'usuario';
+        private $tabela = 'usuarios';
 
         public $id;
         public $nome;
         public $email;
         public $senha;
 
-        public function __contruct(PDO $db){
-            $this -> pdo = $db;
+        public function __contruct(PDO $tabela){
+            $this -> pdo = $tabela;
         }
 
         public function criar(string $nome, string $email, string $senha) : bool {
-            $query = "INSERT INTO " . $this->tabela . " (nome, email, senha) VALUES (:nome, :email, :senha)";
+            $query = "INSERT INTO " . $this -> tabela . " (nome, email, senha) VALUES (:nome, :email, :senha)";
             
             $stmt = $this -> pdo -> prepare($query);
             $this -> nome = htmlspecialchars(strip_tags($nome));
