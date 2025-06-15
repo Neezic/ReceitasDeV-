@@ -23,6 +23,8 @@ class AuthController{
     }
 
     public function login() {
+        var_dump($_POST);
+        die();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . BASE_URL . '?pagina=login');
             exit;
@@ -37,10 +39,10 @@ class AuthController{
         $email = $_POST['email'];
         $senha = $_POST['senha'];
 
-        $usuarioEncontrado = $this->usuarioModel->emailExiste($email);
+        $usuarioEncontrado = $this->usuarioModel->buscarPorEmail($email);
     
         if ($usuarioEncontrado && password_verify($senha, $usuarioEncontrado['senha'])) {
-            unset($usuarioEncontrado['senha']); // Remove a senha da sessão
+            unset($usuarioEncontrado['senha']);
             $_SESSION['usuario'] = $usuarioEncontrado;
             header('Location: ' . BASE_URL . '?pagina=home');
         } else {
@@ -104,7 +106,7 @@ class AuthController{
         'email' => $email,
         'cpf' => $cpf,
         'data_nascimento' => $data_nascimento,
-        'senha' => $senha // O model irá criptografar a senha
+        'senha' => $senha 
         ];
         $sucesso = $this->usuarioModel->criar($dados_usuario);
 

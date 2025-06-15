@@ -35,10 +35,32 @@ class Usuario {
         return false;
     }
 
+    public function emailExiste(string $email): bool {
+    // Query para contar quantos usuários têm o e-mail fornecido
+    $query = "SELECT id FROM usuarios  WHERE email = :email LIMIT 1";
+
+    // Prepara a query
+    $stmt = $this->pdo->prepare($query);
+
+    // Limpa e vincula o parâmetro de e-mail
+    $emailLimpo = htmlspecialchars(strip_tags($email));
+    $stmt->bindParam(':email', $emailLimpo);
+
+    // Executa
+    $stmt->execute();
+
+    // Se a contagem de linhas for maior que 0, o e-mail existe
+    if ($stmt->rowCount() > 0) {
+        return true;
+    }
+
+    return false;
+}
+
 
     
 
-    public function emailExiste(string $email) {
+    public function buscarPorEmail(string $email) {
         $query ="SELECT id, nome, email FROM usuarios WHERE email = :email LIMIT 1";
 
         $stmt = $this->pdo->prepare($query);
