@@ -7,17 +7,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Site de Receitas</h1>
-        <nav>
-            <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="sobre.php">Sobre</a></li>
-                <li><a href="cadastro.php">Cadastro</a></li>
+<header class="topo">
+    <div class="topo-conteudo">
+        <h1 class="logo">Receitas da Vó</h1>
+        <div class="busca">
+            <input type="text" placeholder="Procure uma receita, ingrediente...">
+            <button>Procurar</button>
+        </div>
+    
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="home.php">Início</a></li>
+            <li><a href="sobre.php">Sobre</a></li>
+            <li><a href="cadastro.php">Cadastro</a></li>
+            <li><a href="#">Bolos e Tortas</a></li>
+            <li><a href="#">Massas</a></li>
+            <li><a href="#">Lanches</a></li>
+            <li><a href="#">Doces</a></li>
+        </ul>
+    </nav>
+</header>
 
-            </ul>
-        </nav>
-    </header>
     <main>
         <section id="destaque">
             <h2>Bem-vindo!</h2>
