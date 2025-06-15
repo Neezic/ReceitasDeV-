@@ -23,8 +23,6 @@ class AuthController{
     }
 
     public function login() {
-        var_dump($_POST);
-        die();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . BASE_URL . '?pagina=login');
             exit;
@@ -36,8 +34,8 @@ class AuthController{
             exit;
         }
 
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
+        $email = $_POST['email'] ?? null;
+        $senha = $_POST['senha'] ?? null;
 
         $usuarioEncontrado = $this->usuarioModel->buscarPorEmail($email);
     
