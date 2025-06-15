@@ -1,4 +1,5 @@
 <?php
+
 $host = 'localhost:3307'; // mudar a porta conforme for preciso 
 $dbname = 'receitas';
 $user = 'root';

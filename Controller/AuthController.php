@@ -2,8 +2,16 @@
 session_start();
 require_once '../Config/banco.php';
 require_once '../Model/Usuario.php';
+require_once '../Config/csrf.php';
+
 
 if ($_POST && isset($_POST['acao']) && $_POST['acao'] == 'login') {
+    if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
+        $erro = "Erro de validação. Por favor, tente novamente.";
+        $csrf_token = gerar_token_csrf(); 
+        include 'view/login.php';
+        exit;
+    }
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     
@@ -23,6 +31,6 @@ if ($_POST && isset($_POST['acao']) && $_POST['acao'] == 'login') {
     
    
 }
-
-include 'view/login.php';
+$csrf_token = gerar_token_csrf();
+include '../View/login.php';
 ?>
