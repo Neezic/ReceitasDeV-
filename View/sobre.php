@@ -3,44 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sobre o site</title>
 </head>
 <body>
-    <header>
+     <header>
         <h1>Site de Receitas</h1>
         <nav>
             <ul>
                 <li><a href="home.php">Início</a></li>
                 <li><a href="sobre.php">Sobre</a></li>
                 <li><a href="cadastro.php">Cadastro</a></li>
-
             </ul>
         </nav>
     </header>
     <main>
-        <section id="destaque">
-            <h2>Bem-vindo!</h2>
-            <p>Esta é a página inicial</p>
-            
+        <section>
+
+            <h2>Sobre o site</h2>
+            <p> Nós somos quatros pessoas fazendo um site de receitas. Com receitas. Onde fazem-se receitas.<br>
+                E leem receitas as pessoas que vem pro site. E talvez até cozinhem junto as receitas que estão aqui receitadas.
+            </p>
         </section>  
-
-    <section id="receitas-main">
-        <h2>Últimas receitas:</h2>
-
-        <?php foreach ($receitas as $receita): ?>
-            <div class="receita">
-                <h2><?= htmlspecialchars($receita['titulo']) ?></h2>
-                <p><?= nl2br(htmlspecialchars($receita['descricao'])) ?></p>
-            </div>
-        <?php endforeach; ?>
-    </section>
     </main>
 
-     <footer>
+    <footer>
         <p>2025. Site de Receitas. Todos os direitos reservados para os quatro que fizeram. O site. Esse site. Esse site que você tá lendo agora.</p>
     </footer>
-
 
 </body>
 </html>
