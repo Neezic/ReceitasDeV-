@@ -3,11 +3,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../Config/csrf.php';
-require_once '../Config/banco.php';
-require_once '../Model/Receita.php';
+require_once 'Config/csrf.php';
+require_once 'Config/banco.php';
+require_once 'Model/Receita.php';
 
-class ReceitaController {
+class ReceitasController {
     private $pdo;
     private $receitaModel;
     
@@ -41,7 +41,7 @@ class ReceitaController {
 
         if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['erro'] = "Erro de validação (CSRF). Tente novamente.";
-            header("Location: /?pagina=receitas&acao=criar");
+            header("Location: /?pagina=receitas&acao=salvar");
             exit;
         }
         if (!isset($_SESSION['usuario'])) {
@@ -51,7 +51,7 @@ class ReceitaController {
         
         if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {
             $_SESSION['erro'] = "Preencha todos os campos obrigatórios!";
-            header("Location: /?pagina=receitas&acao=criar");
+            header("Location: /?pagina=receitas&acao=salvar");
             exit;
         }
         
@@ -59,7 +59,6 @@ class ReceitaController {
             'titulo' => $_POST['titulo'],
             'ingredientes' => $_POST['ingredientes'],
             'modo_preparo' => $_POST['modo_preparo'],
-            'tempo_preparo' => $_POST['tempo_preparo'] ?? 0,
             'dificuldade' => $_POST['dificuldade'] ?? 'médio',
             'usuario_id' => $_SESSION['usuario']['id']
         ];
@@ -71,7 +70,7 @@ class ReceitaController {
             header("Location: /?pagina=receitas");
         } else {
             $_SESSION['erro'] = "Erro ao criar receita!";
-            header("Location: /?pagina=receitas&acao=criar");
+            header("Location: /?pagina=receitas&acao=salvar");
         }
         exit;
     }
@@ -125,7 +124,7 @@ class ReceitaController {
         exit;
     }
 
-    public function deletar($id){
+    public function deletar(){
 
         if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['erro'] = "Erro de validação (CSRF).";
@@ -197,37 +196,4 @@ class ReceitaController {
     
 }
 
-   
-
-    $controller = new ReceitaController();
-
-// Roteamento simples
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
-    $id = $_GET['id'] ?? null;
-    
-    switch ($acao) {
-        case 'ver':
-            $controller->ver($id);
-            break;
-        case 'criar':
-            $controller->criar();
-            break;
-        case 'salvar':
-            $controller->salvar();
-            break;
-        case 'editar':
-            $controller->editar($id);
-            break;
-        case 'atualizar':
-            $controller->atualizar($id);
-            break;
-        case 'deletar':
-            $controller->deletar($id);
-            break;
-        default:
-            $controller->index();
-    }
-} else {
-    $controller->index();
-}
+?>

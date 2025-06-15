@@ -59,6 +59,8 @@ session_start();
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
             </div>
+            <input type="hidden" name="acao" value="login">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
             <button type="submit">Cadastrar</button>
         </form>
     </div>

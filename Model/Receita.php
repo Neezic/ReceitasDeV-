@@ -48,9 +48,9 @@ class Receita {
     }
     public function criar(array $dados){
         $query = "INSERT INTO " . $this->tabela . " 
-        (usuario_id, titulo, ingredientes, modo_preparo, tempo_preparo, dificuldade) 
+        (usuario_id, titulo, ingredientes, modo_preparo, dificuldade) 
       VALUES 
-        (:usuario_id, :titulo, :ingredientes, :modo_preparo, :tempo_preparo, :dificuldade)";
+        (:usuario_id, :titulo, :ingredientes, :modo_preparo, :dificuldade)";
 
         $stmt = $this->pdo->prepare($query);
 
@@ -59,7 +59,6 @@ class Receita {
         $stmt->bindValue(':titulo', htmlspecialchars(strip_tags($dados['titulo'])));
         $stmt->bindValue(':ingredientes', htmlspecialchars(strip_tags($dados['ingredientes'])));
         $stmt->bindValue(':modo_preparo', htmlspecialchars(strip_tags($dados['modo_preparo'])));
-        $stmt->bindValue(':tempo_preparo', $dados['tempo_preparo'], PDO::PARAM_INT);
         $stmt->bindValue(':dificuldade', htmlspecialchars(strip_tags($dados['dificuldade'])));
 
         if ($stmt->execute()) {
@@ -76,7 +75,6 @@ class Receita {
                     titulo = :titulo, 
                     ingredientes = :ingredientes, 
                     modo_preparo = :modo_preparo, 
-                    tempo_preparo = :tempo_preparo, 
                     dificuldade = :dificuldade,
                     atualizado_em = NOW() 
                   WHERE id = :id AND usuario_id = :usuario_id";
@@ -86,7 +84,6 @@ class Receita {
         $stmt->bindValue(':titulo', htmlspecialchars(strip_tags($dados['titulo'])));
         $stmt->bindValue(':ingredientes', htmlspecialchars(strip_tags($dados['ingredientes'])));
         $stmt->bindValue(':modo_preparo', htmlspecialchars(strip_tags($dados['modo_preparo'])));
-        $stmt->bindValue(':tempo_preparo', $dados['tempo_preparo'], PDO::PARAM_INT);
         $stmt->bindValue(':dificuldade', htmlspecialchars(strip_tags($dados['dificuldade'])));
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);

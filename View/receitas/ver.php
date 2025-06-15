@@ -7,7 +7,6 @@
     <p><strong>Modo de Preparo:</strong></p>
     <p><?= nl2br(htmlspecialchars($receita['modo_preparo'])) ?></p>
     
-    <p>Tempo: <?= $receita['tempo_preparo'] ?> minutos</p>
     <p>Dificuldade: <?= $receita['dificuldade'] ?></p>
     <p>Criado em: <?= date('d/m/Y H:i', strtotime($receita['criado_em'])) ?></p>
 </div>
