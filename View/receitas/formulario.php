@@ -1,5 +1,9 @@
 <h1><?= isset($receita) ? 'Editar' : 'Criar' ?> Receita</h1>
 
+
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
+
+
 <form method="POST" action="/?pagina=receitas&acao=<?= isset($receita) ? 'atualizar&id='.$receita['id'] : 'salvar' ?>">
     <div>
         <label>Título:</label>
