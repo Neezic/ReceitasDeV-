@@ -58,13 +58,15 @@ class Usuario {
     }
 
     public function buscarPorEmail(string $email) {
-        $query ="SELECT id, nome, email FROM usuarios WHERE email = :email LIMIT 1";
+        $query ="SELECT id, nome, email, senha FROM usuarios WHERE email = :email LIMIT 1";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':email', $email);
         $stmt->execute();
-
-        return $stmt->fetch();
+        if($stmt->rowCount() > 0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
     }
 
 }

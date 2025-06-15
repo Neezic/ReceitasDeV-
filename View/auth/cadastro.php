@@ -33,37 +33,40 @@
                 }
                 ?>
 
-        <form action="<?= BASE_URL ?>?pagina=login&acao=salvarUsuario" method="POST">
-            <div class="form-group">
-                <label for="nome">Nome Completo:</label>
-                <input type="text" id="nome" name="nome" required>
+                <form action="<?= BASE_URL ?>?pagina=login&acao=salvarUsuario" method="POST">
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" required>
+                </div>
+                <div class="form-group">
+                    <label for="data_nascimento">Data de Nascimento:</label>
+                    <input type="date" id="data_nascimento" name="data_nascimento" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha_confirmacao">Confirme sua Senha:</label>
+                    <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
+                </div>
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
+                <button type="submit">Cadastrar</button>
+            </form>
             </div>
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" required>
-            </div>
-            <div class="form-group">
-                <label for="data_nascimento">Data de Nascimento:</label>
-                <input type="date" id="data_nascimento" name="data_nascimento" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <div class="form-group">
-                <label for="senha_confirmacao">Confirme sua Senha:</label>
-                <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
-            </div>
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
-
     <a href="<?= BASE_URL ?>?pagina=login">Já tem uma conta? Faça login</a>
+        </section>
+    </main>
+    
+    
 
 </body>
 </html>
