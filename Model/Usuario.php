@@ -1,67 +1,42 @@
 <?php
-    class Usuario{
-        private $pdo;
-        private $tabela = 'usuarios';
+class Usuario {
+    private $pdo;
 
-        public $id;
-        public $nome;
-        public $email;
-        public $senha;
+    public function __construct(PDO $conexaoPDO) {
+        $this->pdo = $conexaoPDO;
+    }
 
-        public function __contruct(PDO $tabela){
-            $this -> pdo = $tabela;
-        }
+    public function cadastrar(string $nome, string $email, string $cpf, string $data_nascimento, string $senha) : bool {
+        
+        $query = "INSERT INTO usuarios (nome, email, cpf, data_nascimento, senha) VALUES (:nome, :email, :cpf, :data_nascimento, :senha)";
+        
+        try {
+            $stmt = $this->pdo->prepare($query);
+ 
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        
+            $stmt->bindValue(':nome', $nome);
+            $stmt->bindValue(':email', $email);
+            $stmt->bindValue(':cpf', $cpf);
+            $stmt->bindValue(':data_nascimento', $data_nascimento);
+            $stmt->bindValue(':senha', $senhaHash);
+            
+            return $stmt->execute();
 
-        public function criar(string $nome, string $email, string $senha) : bool {
-            $query = "INSERT INTO " . $this -> tabela . " (nome, email, senha) VALUES (:nome, :email, :senha)";
-            
-            $stmt = $this -> pdo -> prepare($query);
-            $this -> nome = htmlspecialchars(strip_tags($nome));
-            $this -> email = htmlspecialchars(strip_tags($email));
-            $this -> senha = password_hash($senha, PASSWORD_DEFAULT);
-            
-            $stmt -> bindParam(':nome',$this->nome);
-            $stmt -> bindParam(':senha',$this->nome);
-            $stmt -> bindParam(':senha',$this->senha);  
-            
-            if ($stmt-> execute()){
-                return true;
-            }
+        } catch (PDOException $e) {
+          
             return false;
-            
-        }
-
-        public function buscarPorId(int $id){
-            $query ="SELECT id, nome, email FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
-
-            $stmt = $this -> pdo -> prepare($query);
-            $stmt-> bindParam(':id', $id);
-            $stmt -> execute();
-
-            if ($stmt-> rowCount() > 0 ){
-                $linha = $stmt-> fetch(PDO::FETCH_ASSOC);
-                return $linha;
-            }
-            return false;
-        }
-        public function buscarPorEmail(int $email){
-            $query ="SELECT id, nome, email FROM " . $this->tabela . " WHERE email = :email LIMIT 1";
-
-            $stmt = $this -> pdo -> prepare($query);
-            $stmt-> bindParam(':email', $email);
-            $stmt -> execute();
-
-            if ($stmt-> rowCount() > 0 ){
-                $linha = $stmt-> fetch(PDO::FETCH_ASSOC);
-                return $linha;
-            }
-            return false;
-        }
-        public function emailExiste(string $email) : bool{
-            $query = "SELECT id FROM " . $this->tabela . " WHERE email = :email LIMIT 1";
-            $stmt = $this -> pdo -> prepare($query);
-            $stmt-> bindParam(':email', $email);
-            return $stmt-> rowCount() > 0;
         }
     }
+
+    public function buscarPorEmail(string $email) {
+        $query ="SELECT id, nome, email FROM usuarios WHERE email = :email LIMIT 1";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':email', $email);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+}
 ?>
