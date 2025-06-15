@@ -62,7 +62,7 @@
                 <button type="submit">Cadastrar</button>
             </form>
             </div>
-    <a href="<?= BASE_URL ?>?pagina=login">Já tem uma conta? Faça login</a>
+            <a href="<?= BASE_URL ?>?pagina=login">Já tem uma conta? Faça login</a>
         </section>
     </main>
     
