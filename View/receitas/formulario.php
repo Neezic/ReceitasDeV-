@@ -1,4 +1,3 @@
-require __DIR__ 
 <h1><?= isset($receita) ? 'Editar' : 'Criar' ?> Receita</h1>
 
 <form method="POST" action="/?pagina=receitas&acao=<?= isset($receita) ? 'atualizar&id='.$receita['id'] : 'salvar' ?>">
