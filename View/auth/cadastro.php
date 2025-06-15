@@ -1,10 +1,3 @@
- 
-
-<?php
-// É essencial iniciar a sessão em todas as páginas que você quer acessar a variável $_SESSION
-session_start();
-// aqui eu pedi pro chat fazer alterar conforme necessario para o front 
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,9 +11,11 @@ session_start();
         <h1>Site de Receitas</h1>
         <nav>
             <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="sobre.php">Sobre</a></li>
-                <li><a href="cadastro.php">Cadastro</a></li>
+                <li><a href="<?=BASE_URL?>?pagina=home">Início</a></li>
+        
+                <li><a href="<?=BASE_URL?>?pagina=sobre">Sobre</a></li>
+        
+                <li><a href="<?=BASE_URL?>?pagina=login&acao=cadastro">Cadastro</a></li>
             </ul>
         </nav>
     </header>
@@ -38,7 +33,7 @@ session_start();
                 }
                 ?>
 
-        <form action="../Controller/processa_cadastro.php" method="POST">
+        <form action="<?= BASE_URL ?>?pagina=login&acao=salvarUsuario" method="POST">
             <div class="form-group">
                 <label for="nome">Nome Completo:</label>
                 <input type="text" id="nome" name="nome" required>
@@ -59,9 +54,16 @@ session_start();
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
             </div>
+            <div class="form-group">
+                <label for="senha_confirmacao">Confirme sua Senha:</label>
+                <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
+            </div>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
             <button type="submit">Cadastrar</button>
         </form>
     </div>
+
+    <a href="<?= BASE_URL ?>?pagina=login">Já tem uma conta? Faça login</a>
 
 </body>
 </html>

@@ -41,17 +41,17 @@ class ReceitasController {
 
         if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['erro'] = "Erro de validação (CSRF). Tente novamente.";
-            header("Location: /?pagina=receitas&acao=salvar");
+            header("Location:<?=BASE_URL?>?pagina=receitas&acao=salvar");
             exit;
         }
         if (!isset($_SESSION['usuario'])) {
-            header("Location: /?pagina=login");
+            header("Location: <?=BASE_URL?>?pagina=login");
             exit;
         }
         
         if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {
             $_SESSION['erro'] = "Preencha todos os campos obrigatórios!";
-            header("Location: /?pagina=receitas&acao=salvar");
+            header("Location: <?=BASE_URL?>?pagina=receitas&acao=salvar");
             exit;
         }
         
@@ -70,7 +70,7 @@ class ReceitasController {
             header("Location: /?pagina=receitas");
         } else {
             $_SESSION['erro'] = "Erro ao criar receita!";
-            header("Location: /?pagina=receitas&acao=salvar");
+            header("Location: <?=BASE_URL?>?pagina=receitas&acao=salvar");
         }
         exit;
     }
@@ -79,7 +79,7 @@ class ReceitasController {
 
         if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['erro'] = "Erro de validação (CSRF). Tente novamente.";
-            header("Location: /?pagina=receitas&acao=editar&id=$id");
+            header("Location: <?=BASE_URL?>?pagina=receitas&acao=editar&id=$id");
             exit;
         }   
         if ($id === null) { header("Location: /?pagina=receitas"); exit; }
@@ -87,21 +87,21 @@ class ReceitasController {
 
 
         if (!isset($_SESSION['usuario'])) { 
-            header("Location: /?pagina=login");
+            header("Location: <?=BASE_URL?>?pagina=login");
             exit;
          }
         $idUsuarioLogado = $_SESSION['usuario']['id'];
 
         if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {
             $_SESSION['erro'] = "Preencha todos os campos obrigatórios!";
-            header("Location: /?pagina=receitas&acao=editar&id=$idReceita");
+            header("Location: <?=BASE_URL?>?pagina=receitas&acao=editar&id=$idReceita");
             exit;
         }
 
         $donoReceita = $this->receitaModel->buscarDonoReceita($idReceita);
         if (!$donoReceita || $donoReceita != $idUsuarioLogado) {
             $_SESSION['erro'] = "Você não tem permissão para editar esta receita.";
-            header("Location: /?pagina=receitas");
+            header("Location: <?=BASE_URL?>?pagina=receitas");
             exit;
         }
         
@@ -128,17 +128,17 @@ class ReceitasController {
 
         if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['erro'] = "Erro de validação (CSRF).";
-            header("Location: /?pagina=receitas");
+            header("Location: <?=BASE_URL?>?pagina=receitas");
             exit;
         }
 
         $id = $_POST['id'] ?? null;
         if (!$id) {
-        header("Location: /?pagina=receitas");
+        header("Location: <?=BASE_URL?>?pagina=receitas");
         exit;
         }
         if (!isset($_SESSION['usuario'])) { 
-            header("Location: /?pagina=login");
+            header("Location: <?=BASE_URL?>?pagina=login");
             exit;
         }
         $idUsuarioLogado = $_SESSION['usuario']['id'];
@@ -146,7 +146,7 @@ class ReceitasController {
         $donoReceita = $this->receitaModel->buscarDonoReceita($id);
         if (!$donoReceita || $donoReceita != $idUsuarioLogado) {
             $_SESSION['erro'] = "Você não tem permissão para remover esta receita.";
-            header("Location: /?pagina=receitas");
+            header("Location: <?=BASE_URL?>?pagina=receitas");
             exit;
         }
 
@@ -156,14 +156,14 @@ class ReceitasController {
             $_SESSION['erro'] = "Erro ao remover receita.";
         }
         
-        header("Location: /?pagina=receitas");
+        header("Location: <?=BASE_URL?>?pagina=receitas");
         exit;
     }
 
 
     public function criar() { 
         if (!isset($_SESSION['usuario'])) {
-            header("Location: /?pagina=login");
+            header("Location: <?=BASE_URL?>?pagina=login");
             exit;
         }
         $csrf_token = gerar_token_csrf();
@@ -177,7 +177,7 @@ class ReceitasController {
         $idReceita = (int)$id;
 
         if (!isset($_SESSION['usuario'])) {
-            header("Location: /?pagina=login");
+            header("Location: <?=BASE_URL?>?pagina=login");
             exit;
         }
         $idUsuarioLogado = $_SESSION['usuario']['id'];
@@ -186,7 +186,7 @@ class ReceitasController {
         
         if (!$receita || $receita['usuario_id'] != $idUsuarioLogado) {
             $_SESSION['erro'] = "Receita não encontrada ou você não tem permissão para editá-la.";
-            header("Location: /?pagina=receitas");
+            header("Location: <?=BASE_URL?>?pagina=receitas");
             exit;
         }
         $csrf_token = gerar_token_csrf();

@@ -1,4 +1,5 @@
 <?php
+define('BASE_URL', '/ReceitasDeV-/');
 
 $host = 'localhost:3306'; // mudar a porta conforme for preciso 
 $dbname = 'receitas';

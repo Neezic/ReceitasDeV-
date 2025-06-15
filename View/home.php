@@ -11,10 +11,11 @@
         <h1>Site de Receitas</h1>
         <nav>
             <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="sobre.php">Sobre</a></li>
-                <li><a href="cadastro.php">Cadastro</a></li>
-
+                <li><a href="<?=BASE_URL?>?pagina=home">Início</a></li>
+        
+                <li><a href="<?=BASE_URL?>?pagina=sobre">Sobre</a></li>
+        
+                <li><a href="<?=BASE_URL?>?pagina=login&acao=cadastro">Cadastro</a></li>
             </ul>
         </nav>
     </header>

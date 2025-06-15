@@ -6,7 +6,7 @@ $modo_edicao = isset($receita) && !empty($receita);
 
 // Define o título da página e a URL de ação do formulário dinamicamente
 $titulo_pagina = $modo_edicao ? 'Editar Receita' : 'Criar Nova Receita';
-$url_acao = '/?pagina=receitas&acao=' . ($modo_edicao ? 'atualizar&id=' . htmlspecialchars($receita['id']) : 'criar');
+$url_acao = '<?=BASE_URL?>?pagina=receitas&acao=' . ($modo_edicao ? 'atualizar&id=' . htmlspecialchars($receita['id']) : 'criar');
 
 // Preenche os valores dos campos, usando dados da receita ou valores padrão
 $valor_titulo = $modo_edicao ? $receita['titulo'] : '';

@@ -23,7 +23,7 @@
             <h2><?= htmlspecialchars($receita['titulo']) ?></h2>
             <p>Por: <?= htmlspecialchars($receita['usuario_id']) ?></p>
             <p>Dificuldade: <?= $receita['dificuldade'] ?></p>
-            <a href="/?pagina=receitas&acao=ver&id=<?= $receita['id'] ?>">Ver detalhes</a>
+            <a href="<?=BASE_URL?>?pagina=receitas&acao=ver&id=<?= $receita['id'] ?>">Ver detalhes</a>
             
             <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['id'] == $receita['usuario_id']): ?>
                 <a href="/?pagina=receitas&acao=editar&id=<?= $receita['id'] ?>">Editar</a>
