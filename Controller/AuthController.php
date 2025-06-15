@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../Config/banco.php';
-require_once '../Model/Usuario.php';
-require_once '../Config/csrf.php';
+require_once 'Config/banco.php';
+require_once 'Model/Usuario.php';
+require_once 'Config/csrf.php';
 
 
 if ($_POST && isset($_POST['acao']) && $_POST['acao'] == 'login') {

@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../Config/banco.php';
-require_once __DIR__ . '/../Model/Usuario.php';
+require_once __DIR__ . 'Config/banco.php';
+require_once __DIR__ . 'Model/Usuario.php';
 
 class UserController {
 
