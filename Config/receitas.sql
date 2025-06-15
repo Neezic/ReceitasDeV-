@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 02/06/2025 às 20:50
+-- Tempo de geração: 16/06/2025 às 01:46
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -86,9 +86,9 @@ CREATE TABLE `usuarios` (
   `Id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `data_nascimento` date DEFAULT NULL,
   `senha` varchar(255) NOT NULL,
-  `token_recuperacao` varchar(255) DEFAULT NULL,
-  `token_expiracao` datetime DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -96,8 +96,12 @@ CREATE TABLE `usuarios` (
 -- Despejando dados para a tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`Id`, `nome`, `email`, `senha`, `token_recuperacao`, `token_expiracao`, `criado_em`) VALUES
-(1, 'Administrador', 'admin@receitas.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL, '2025-05-29 19:28:14');
+INSERT INTO `usuarios` (`Id`, `nome`, `email`, `cpf`, `data_nascimento`, `senha`, `criado_em`) VALUES
+(1, 'Administrador', 'admin@receitas.com', '', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2025-05-29 19:28:14'),
+(2, 'Viviane', 'vivane@email.com', '99088811187', '1994-04-22', '$2y$10$tQbGVm/Vd2U/EgsBbaWbQOJzo0FOlGUgqqEWLm6uecV9qFtFyPKNi', '2025-06-15 22:09:32'),
+(3, 'Tizilmon', 'algum22@email.com', '11122233344', '1993-01-10', '$2y$10$FOibtumcoFpTe3BZQ0uDZuvZC.ReU30ynlKHe4zSDI/PR2TNBmzL.', '2025-06-15 22:15:33'),
+(4, 'João Lucas Sorda de Almeida', 'joaolucasdealmeida1@gmail.com', '10026043971', '2004-12-22', '$2y$10$ExVc6b4pr9cP8D34rwLr1.OsQCVRVqJrsqYnu68TQzo7VATEfwbWe', '2025-06-15 22:42:27'),
+(5, 'agumon', 'umemail33@protonmail.com', '00100200344', '2014-05-31', '$2y$10$XuOZMLSeWYcEYRtxZrzxiOte/9ryemBvSmZv07wuYd7An7EmnAHcm', '2025-06-15 23:21:31');
 
 --
 -- Índices para tabelas despejadas
@@ -151,7 +155,7 @@ ALTER TABLE `receitas`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restrições para tabelas despejadas
