@@ -1,5 +1,5 @@
 <h1><?= htmlspecialchars($receita['titulo']) ?></h1>
-
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
 <div class="receita-detalhes">
     <p><strong>Ingredientes:</strong></p>
     <p><?= nl2br(htmlspecialchars($receita['ingredientes'])) ?></p>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
 </head>
 <body>
 <header class="topo">
@@ -24,10 +24,12 @@
             <li><a href="<?=BASE_URL?>?pagina=sobre">Sobre</a></li>
         
             <li><a href="<?=BASE_URL?>?pagina=login&acao=cadastro">Cadastro</a></li>
+
             <li><a href="#">Bolos e Tortas</a></li>
             <li><a href="#">Massas</a></li>
             <li><a href="#">Lanches</a></li>
-            <li><a href="#">Doces</a></li>        </ul>
+            <li><a href="#">Doces</a></li>        
+        </ul>
     </nav>
 </header>
 

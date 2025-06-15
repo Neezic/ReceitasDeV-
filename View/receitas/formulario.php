@@ -1,5 +1,6 @@
-<?php
 
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+<?php
 
 // Lógica para facilitar a leitura e preenchimento dos campos do formulário
 $modo_edicao = isset($receita) && !empty($receita);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
 </head>
 <body>
     <header>
@@ -58,7 +58,7 @@
                 <label for="senha_confirmacao">Confirme sua Senha:</label>
                 <input type="password" id="senha_confirmacao" name="senha_confirmacao" required>
             </div>
-<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
             <button type="submit">Cadastrar</button>
         </form>
     </div>

@@ -1,6 +1,7 @@
 <h1>Lista de Receitas</h1>
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
 <?php
-    include_once "./Config/csrf.php";
+    include_once "Config/csrf.php";
 ?>
 
 <?php if (isset($_SESSION['sucesso'])): ?>

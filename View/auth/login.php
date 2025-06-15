@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+
 <h1>Login</h1>
 <form action="<?= BASE_URL ?>?pagina=login&acao=login" method="POST">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
