@@ -11,32 +11,32 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <style>
-        /* Estilos básicos para o formulário e mensagens */
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
-        .form-container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; }
-        .form-group input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
-        .alerta { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; text-align: center; }
-        .alerta.erro { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .alerta.sucesso { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        button { width: 100%; padding: 0.7rem; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Site de Receitas</h1>
+        <nav>
+            <ul>
+                <li><a href="home.php">Início</a></li>
+                <li><a href="sobre.php">Sobre</a></li>
+                <li><a href="cadastro.php">Cadastro</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="form-content">
+                <h2>Crie sua Conta</h2>
 
-    <div class="form-container">
-        <h2>Crie sua Conta</h2>
-
-        <?php
-        // Bloco de PHP para exibir a mensagem de erro, se ela existir na sessão.
-        if (isset($_SESSION['mensagem_erro'])) {
-            echo "<div class='alerta erro'>" . htmlspecialchars($_SESSION['mensagem_erro']) . "</div>";
-            // É crucial limpar a mensagem da sessão depois de exibi-la, para que ela não apareça novamente.
-            unset($_SESSION['mensagem_erro']);
-        }
-        ?>
+                <?php
+                // Bloco de PHP para exibir a mensagem de erro, se ela existir na sessão.
+                if (isset($_SESSION['mensagem_erro'])) {
+                    echo "<div class='alerta erro'>" . htmlspecialchars($_SESSION['mensagem_erro']) . "</div>";
+                    // É crucial limpar a mensagem da sessão depois de exibi-la, para que ela não apareça novamente.
+                    unset($_SESSION['mensagem_erro']);
+                }
+                ?>
 
         <form action="../Controller/processa_cadastro.php" method="POST">
             <div class="form-group">
@@ -59,8 +59,6 @@ session_start();
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
             </div>
-            <input type="hidden" name="acao" value="login">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
             <button type="submit">Cadastrar</button>
         </form>
     </div>
