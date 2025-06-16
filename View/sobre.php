@@ -15,7 +15,17 @@
         
                 <li><a href="<?=BASE_URL?>?pagina=sobre">Sobre</a></li>
         
-                <li><a href="<?=BASE_URL?>?pagina=login&acao=cadastro">Cadastro</a></li>
+                <?php if (isset($_SESSION['usuario'])): ?>
+                
+                    <li><a href="<?= BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
+                
+                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
+
+                <?php else: ?>
+
+                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
+                    <li><a href="<?= BASE_URL ?>?pagina=login">Login</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
