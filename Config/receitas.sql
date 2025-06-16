@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 16/06/2025 às 01:46
+-- Tempo de geração: 16/06/2025 às 12:24
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -59,11 +59,19 @@ CREATE TABLE `receitas` (
   `titulo` varchar(100) NOT NULL,
   `ingredientes` text NOT NULL,
   `modo_preparo` text NOT NULL,
-  `Dificuldade` enum('facil','médio','difícil','') NOT NULL,
+  `dificuldade` enum('facil','médio','difícil','') NOT NULL,
+  `categoria_id` int(11) DEFAULT NULL,
   `usuario_id` int(11) NOT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   `atualizado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `receitas`
+--
+
+INSERT INTO `receitas` (`id`, `titulo`, `ingredientes`, `modo_preparo`, `dificuldade`, `categoria_id`, `usuario_id`, `criado_em`, `atualizado_em`) VALUES
+(7, 'Bolo de chocolate', 'nescau, farinha, ovos, fermento e manteiga', 'coloque tudo em uma vasilha e misture bem, após isso coloque o fermento, unte uma forma e pre aqueça o forno, coloque a mistura na forma e depois no forno e espere uma hora', 'médio', NULL, 4, '2025-06-16 02:30:18', '2025-06-16 02:44:07');
 
 -- --------------------------------------------------------
 
@@ -75,6 +83,13 @@ CREATE TABLE `receita_categoria` (
   `receita_id` int(11) NOT NULL,
   `categoria_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `receita_categoria`
+--
+
+INSERT INTO `receita_categoria` (`receita_id`, `categoria_id`) VALUES
+(7, 10);
 
 -- --------------------------------------------------------
 
@@ -119,7 +134,8 @@ ALTER TABLE `categorias`
 --
 ALTER TABLE `receitas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `usuario_id` (`usuario_id`);
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `categoria_id` (`categoria_id`);
 
 --
 -- Índices de tabela `receita_categoria`
@@ -149,7 +165,7 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de tabela `receitas`
 --
 ALTER TABLE `receitas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
@@ -165,7 +181,8 @@ ALTER TABLE `usuarios`
 -- Restrições para tabelas `receitas`
 --
 ALTER TABLE `receitas`
-  ADD CONSTRAINT `FOREIGN_KEY` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FOREIGN_KEY` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `receitas_ibfk_1` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE SET NULL;
 
 --
 -- Restrições para tabelas `receita_categoria`
