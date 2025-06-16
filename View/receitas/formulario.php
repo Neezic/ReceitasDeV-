@@ -1,143 +1,109 @@
-
-<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
 <?php
-
-// Lógica para facilitar a leitura e preenchimento dos campos do formulário
 $modo_edicao = isset($receita) && !empty($receita);
-
-// Define o título da página e a URL de ação do formulário dinamicamente
 $titulo_pagina = $modo_edicao ? 'Editar Receita' : 'Criar Nova Receita';
 $url_acao = BASE_URL . '?pagina=receitas&acao=' . ($modo_edicao ? 'atualizar&id=' . htmlspecialchars($receita['id']) : 'salvar');
 
-// Preenche os valores dos campos, usando dados da receita ou valores padrão
 $valor_titulo = $modo_edicao ? $receita['titulo'] : '';
 $valor_ingredientes = $modo_edicao ? $receita['ingredientes'] : '';
 $valor_modo_preparo = $modo_edicao ? $receita['modo_preparo'] : '';
 $valor_dificuldade = $modo_edicao ? $receita['dificuldade'] : 'médio';
-$valor_categoria_id = $modo_edicao ? ($receita['categoria_id'] ?? '') : '';
-
 ?>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-<h1><?= $titulo_pagina ?></h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $titulo_pagina ?></title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+</head>
 
-<form method="POST" action="<?= $url_acao ?>" class="formulario-receita">
-    
-    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
+<body>
+    <header>
+        <h1>Site de Receitas</h1>
+        <nav>
+            <ul>
+                <li><a href="<?= BASE_URL ?>?pagina=home">Início</a></li>
 
-    <div class="grupo-formulario">
-        <label for="titulo">Título da Receita:</label>
-        <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($valor_titulo) ?>" required>
-    </div>
-    
-    <div class="grupo-formulario">
-        <label for="ingredientes">Ingredientes:</label>
-        <textarea id="ingredientes" name="ingredientes" rows="10" required><?= htmlspecialchars($valor_ingredientes) ?></textarea>
-        <small>Dica: Coloque um ingrediente por linha para facilitar a leitura.</small>
-    </div>
-    
-    <div class="grupo-formulario">
-        <label for="modo_preparo">Modo de Preparo:</label>
-        <textarea id="modo_preparo" name="modo_preparo" rows="10" required><?= htmlspecialchars($valor_modo_preparo) ?></textarea>
-    </div>
-    
-    <div class="grupo-formulario">
-        <label for="dificuldade">Dificuldade:</label>
-        <select id="dificuldade" name="dificuldade">
-            <option value="fácil" <?= $valor_dificuldade == 'fácil' ? 'selected' : '' ?>>Fácil</option>
-            <option value="médio" <?= $valor_dificuldade == 'médio' ? 'selected' : '' ?>>Médio</option>
-            <option value="difícil" <?= $valor_dificuldade == 'difícil' ? 'selected' : '' ?>>Difícil</option>
-        </select>
-    </div> 
+                <li><a href="<?= BASE_URL ?>?pagina=sobre">Sobre</a></li>
 
-    <div class="grupo-formulario">
-    <label for="categoria_id">Categoria:</label>
-    <select id="categoria_id" name="categoria_id">
-        <option value="">Selecione uma categoria</option>
+                <?php if (isset($_SESSION['usuario'])): ?>
 
+                    <li><a href="<?= BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
 
-        <?php 
-        if (isset($categorias)) {
-            foreach ($categorias as $categoria): 
-                $selecionado = ($categoria['id'] == $valor_categoria_id) ? 'selected' : '';
-        ?>
+                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
 
-            <option value="<?= htmlspecialchars($categoria['id']) ?>" <?= $selecionado ?>>
-                <?= htmlspecialchars($categoria['nome']) ?>
-            </option>
-       
+                <?php else: ?>
 
-       <?php 
-            endforeach; 
-        }
-        ?>
+                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
+                    <li><a href="<?= BASE_URL ?>?pagina=login">Login</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
 
+    <main>
+        <div class="form-content">
+            <h2><?= $titulo_pagina ?></h2>
 
-    </select>
-</div>
+            <?php if (isset($_SESSION['erro'])): ?>
+                <div class='alerta erro'><?= $_SESSION['erro']; ?></div>
+                <?php unset($_SESSION['erro']); ?>
+            <?php endif; ?>
 
-<div class="grupo-formulario">
-    <label for="nova_categoria">Ou crie uma nova categoria:</label>
-    <input type="text" id="nova_categoria" name="nova_categoria" placeholder="Ex: Sobremesas, Lanches, etc.">
-    <small>Deixe em branco se você selecionou uma categoria da lista acima.</small>
-</div>
-    
-    <div class="acoes-formulario">
-        <button type="submit" class="btn-principal">Salvar Receita</button>
-        <a href="/?pagina=receitas" class="btn-secundario">Cancelar</a>
-    </div>
+            <form method="POST" action="<?= $url_acao ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
 
-    
-</form>
+                <div class="form-group">
+                    <label for="titulo">Título da Receita:</label>
+                    <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($valor_titulo) ?>" required>
+                </div>
 
-<style>
-    .formulario-receita {
-        max-width: 700px;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-    .grupo-formulario {
-        margin-bottom: 20px;
-    }
-    .grupo-formulario label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-    .grupo-formulario input[type="text"],
-    .grupo-formulario input[type="number"],
-    .grupo-formulario textarea,
-    .grupo-formulario select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* Importante para o padding não alterar a largura total */
-    }
-    .grupo-formulario small {
-        display: block;
-        margin-top: 5px;
-        color: #777;
-    }
-    .acoes-formulario {
-        margin-top: 30px;
-    }
-    .acoes-formulario .btn-principal,
-    .acoes-formulario .btn-secundario {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        text-decoration: none;
-        cursor: pointer;
-    }
-    .acoes-formulario .btn-principal {
-        background-color: #28a745; /* Verde */
-        color: white;
-    }
-    .acoes-formulario .btn-secundario {
-        background-color: #6c757d; /* Cinza */
-        color: white;
-        margin-left: 10px;
-    }
-</style>
+                <div class="form-group">
+                    <label for="ingredientes">Ingredientes:</label>
+                    <textarea id="ingredientes" name="ingredientes" rows="8" required><?= htmlspecialchars($valor_ingredientes) ?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="modo_preparo">Modo de Preparo:</label>
+                    <textarea id="modo_preparo" name="modo_preparo" rows="8" required><?= htmlspecialchars($valor_modo_preparo) ?></textarea>
+                </div>
+
+                <div class="grupo-formulario">
+                    <label for="categoria_id">Categoria:</label>
+                    <select id="categoria_id" name="categoria_id">
+                        <option value="">Selecione uma categoria</option>
+                        <?php foreach ($categorias as $categoria): ?>
+                            <option value="<?= $categoria['id'] ?>" <?= (isset($receita) && $receita['categoria_id'] == $categoria['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($categoria['nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="grupo-formulario">
+                    <label for="nova_categoria">Ou crie uma nova categoria:</label>
+                    <input type="text" id="nova_categoria" name="nova_categoria" placeholder="Ex: Sobremesas, Lanches, etc.">
+                    <small>Deixe em branco se você selecionou uma categoria da lista acima.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="dificuldade">Dificuldade:</label>
+                    <select id="dificuldade" name="dificuldade">
+                        <option value="fácil" <?= $valor_dificuldade == 'fácil' ? 'selected' : '' ?>>Fácil</option>
+                        <option value="médio" <?= $valor_dificuldade == 'médio' ? 'selected' : '' ?>>Médio</option>
+                        <option value="difícil" <?= $valor_dificuldade == 'difícil' ? 'selected' : '' ?>>Difícil</option>
+                    </select>
+                </div>
+
+                <button type="submit">Salvar Receita</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>2025. Site de Receitas. Todos os direitos reservados para os quatro que fizeram. O site. Esse site. Esse site que você tá lendo agora.</p>
+    </footer>
+</body>
+
+</html>

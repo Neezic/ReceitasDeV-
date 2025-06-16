@@ -18,9 +18,15 @@ class Receita {
 
 
     public function listarTodas(int $limit = null, int $offset = 0 ): array {
-        $query = "SELECT r.id, r.titulo, r.ingredientes, r.modo_preparo,r.Dificuldade, r.usuario_id, r.criado_em
-        FROM " . $this->tabela . " r 
-        ORDER BY r.criado_em DESC";
+        $query = "SELECT 
+                r.*, 
+                c.nome AS nome_categoria 
+              FROM 
+                " . $this->tabela . " r
+              LEFT JOIN 
+                categorias c ON r.categoria_id = c.id
+              ORDER BY 
+                r.criado_em DESC";
 
         if ($limit !== null) {
             $query .= " LIMIT :limit OFFSET :offset";
@@ -34,6 +40,13 @@ class Receita {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function listarCategorias(): array {
+    $query = "SELECT * FROM categorias ORDER BY nome ASC";
+    $stmt = $this->pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function buscarPorId(int $id){
         $query = "SELECT * FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
@@ -50,14 +63,14 @@ class Receita {
 
     // Dentro da classe Receita em Model/Receita.php
 
-public function criar(array $dados) {
+    public function criar(array $dados) {
     // Inicia a transação
     $this->pdo->beginTransaction();
 
     try {
         // 1. Insere a receita na tabela 'receitas'
-        $queryReceita = "INSERT INTO receitas (usuario_id, titulo, ingredientes, modo_preparo, Dificuldade) 
-                         VALUES (:usuario_id, :titulo, :ingredientes, :modo_preparo, :dificuldade)";
+        $queryReceita = "INSERT INTO receitas (usuario_id, titulo, ingredientes, modo_preparo, dificuldade,categoria_id) 
+                         VALUES (:usuario_id, :titulo, :ingredientes, :modo_preparo, :dificuldade: categoria_id)";
 
         $stmtReceita = $this->pdo->prepare($queryReceita);
         $stmtReceita->bindValue(':usuario_id', $dados['usuario_id'], PDO::PARAM_INT);
@@ -65,6 +78,7 @@ public function criar(array $dados) {
         $stmtReceita->bindValue(':ingredientes', htmlspecialchars(strip_tags($dados['ingredientes'])));
         $stmtReceita->bindValue(':modo_preparo', htmlspecialchars(strip_tags($dados['modo_preparo'])));
         $stmtReceita->bindValue(':dificuldade', htmlspecialchars(strip_tags($dados['dificuldade'])));
+        $stmtReceita->bindValue(':categoria_id', htmlspecialchars(strip_tags($dados['categoria_id'])));
         $stmtReceita->execute();
         
         // Pega o ID da receita que acabamos de criar
@@ -88,7 +102,7 @@ public function criar(array $dados) {
         error_log("Erro ao criar receita: " . $e->getMessage()); // Opcional: logar o erro
         return false;
     }
-    }
+}
     
 
 
@@ -144,6 +158,25 @@ public function criar(array $dados) {
         }
         return false;
     }
+    public function buscarPorTermo(string $termo): array {
+        $query = "SELECT * FROM " . $this->tabela . " 
+              WHERE titulo LIKE :termo OR ingredientes LIKE :termo
+              ORDER BY criado_em DESC";
+
+        $stmt = $this->pdo->prepare($query);
+
+        $termo_like = '%' . $termo . '%';
+        $stmt->bindParam(':termo', $termo_like);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+
+
 }
 ?>
 
