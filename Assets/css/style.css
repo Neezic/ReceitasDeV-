@@ -12,7 +12,7 @@
     line-height: 1.5;
     min-height: 100vh;
     display: flex; /* espaçamento bonitinho e estrutura flex p ocupar td */
-    flex-direction: column;
+    flex-direction: column; /*direção coluna */ 
   }
   
   /* HEADER */
