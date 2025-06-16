@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once 'Config/csrf.php';
 require_once 'Config/banco.php';
 require_once 'Model/Receita.php';
+require_once 'Model/Categoria.php';
 
 class ReceitasController {
     private $pdo;
@@ -15,6 +16,7 @@ class ReceitasController {
         global $pdo;
         $this->pdo = $pdo;
         $this->receitaModel = new Receita($pdo);
+        $this->categoriaModel = new Categoria($pdo);
     }
     
     public function index() {
@@ -37,43 +39,62 @@ class ReceitasController {
         include '../View/receitas/ver.php';
     }
 
-    public function salvar() {
+public function salvar() {
 
-        if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
-            $_SESSION['erro'] = "Erro de validação (CSRF). Tente novamente.";
-            header("Location:<?=BASE_URL?>?pagina=receitas&acao=salvar");
-            exit;
-        }
-        if (!isset($_SESSION['usuario'])) {
-            header("Location: <?=BASE_URL?>?pagina=login");
-            exit;
-        }
-        
-        if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {
-            $_SESSION['erro'] = "Preencha todos os campos obrigatórios!";
-            header("Location: <?=BASE_URL?>?pagina=receitas&acao=salvar");
-            exit;
-        }
-        
-        $dadosReceita = [
-            'titulo' => $_POST['titulo'],
-            'ingredientes' => $_POST['ingredientes'],
-            'modo_preparo' => $_POST['modo_preparo'],
-            'dificuldade' => $_POST['dificuldade'] ?? 'médio',
-            'usuario_id' => $_SESSION['usuario']['id']
-        ];
-        
-       $novoId = $this->receitaModel->criar($dadosReceita);
-
-        if ($novoId) {
-            $_SESSION['sucesso'] = "Receita criada com sucesso!";
-            header("Location: /?pagina=receitas");
-        } else {
-            $_SESSION['erro'] = "Erro ao criar receita!";
-            header("Location: <?=BASE_URL?>?pagina=receitas&acao=salvar");
-        }
+    if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
+        $_SESSION['erro'] = "Erro de validação (CSRF). Tente novamente.";
+        header("Location: " . BASE_URL . "?pagina=receitas&acao=criar");
         exit;
     }
+
+    if (!isset($_SESSION['usuario'])) {
+        header("Location: " . BASE_URL . "?pagina=login");
+        exit;
+    }
+    
+    if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {
+        $_SESSION['erro'] = "Preencha todos os campos obrigatórios!";
+        header("Location: " . BASE_URL . "?pagina=receitas&acao=criar");
+        exit;
+    }
+    
+    $categoria_id = $_POST['categoria_id'] ?? null;// pega os dados da categoria do formulário
+    $nova_categoria = trim($_POST['nova_categoria'] ?? '');
+
+    if (!empty($nova_categoria)) {
+        $categoria_id = $this->categoriaModel->criar($nova_categoria);
+        
+        if (!$categoria_id) {
+            $_SESSION['erro'] = "Ocorreu um erro ao tentar criar a nova categoria.";
+            header("Location: " . BASE_URL . "?pagina=receitas&acao=criar");
+            exit;
+        }
+    } elseif (empty($categoria_id)) {
+        $_SESSION['erro'] = "É obrigatório selecionar uma categoria";
+        header("Location: " . BASE_URL . "?pagina=receitas&acao=criar");
+        exit;
+    }
+    
+    $dadosReceita = [
+        'titulo' => $_POST['titulo'],
+        'ingredientes' => $_POST['ingredientes'],
+        'modo_preparo' => $_POST['modo_preparo'],
+        'dificuldade' => $_POST['dificuldade'] ?? 'médio',
+        'usuario_id' => $_SESSION['usuario']['id'],
+        'categoria_id' => $categoria_id 
+    ];
+    
+    $novoId = $this->receitaModel->criar($dadosReceita);
+
+    if ($novoId) {
+        $_SESSION['sucesso'] = "Receita criada com sucesso!";
+        header("Location: " . BASE_URL . "?pagina=receitas");
+    } else {
+        $_SESSION['erro'] = "Erro ao criar receita!";
+        header("Location: " . BASE_URL . "?pagina=receitas&acao=criar");
+    }
+    exit;
+}
 
     public function atualizar($id) {
 
@@ -166,6 +187,7 @@ class ReceitasController {
             header("Location: <?=BASE_URL?>?pagina=login");
             exit;
         }
+        $categorias = $this->categoriaModel->listarTodas();
         $csrf_token = gerar_token_csrf();
         $receita = null; 
         include '../View/receitas/formulario.php';

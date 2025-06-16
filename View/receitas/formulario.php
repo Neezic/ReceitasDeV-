@@ -7,13 +7,14 @@ $modo_edicao = isset($receita) && !empty($receita);
 
 // Define o título da página e a URL de ação do formulário dinamicamente
 $titulo_pagina = $modo_edicao ? 'Editar Receita' : 'Criar Nova Receita';
-$url_acao = '<?=BASE_URL?>?pagina=receitas&acao=' . ($modo_edicao ? 'atualizar&id=' . htmlspecialchars($receita['id']) : 'criar');
+$url_acao = BASE_URL . '?pagina=receitas&acao=' . ($modo_edicao ? 'atualizar&id=' . htmlspecialchars($receita['id']) : 'salvar');
 
 // Preenche os valores dos campos, usando dados da receita ou valores padrão
 $valor_titulo = $modo_edicao ? $receita['titulo'] : '';
 $valor_ingredientes = $modo_edicao ? $receita['ingredientes'] : '';
 $valor_modo_preparo = $modo_edicao ? $receita['modo_preparo'] : '';
 $valor_dificuldade = $modo_edicao ? $receita['dificuldade'] : 'médio';
+$valor_categoria_id = $modo_edicao ? ($receita['categoria_id'] ?? '') : '';
 
 ?>
 
@@ -46,12 +47,46 @@ $valor_dificuldade = $modo_edicao ? $receita['dificuldade'] : 'médio';
             <option value="médio" <?= $valor_dificuldade == 'médio' ? 'selected' : '' ?>>Médio</option>
             <option value="difícil" <?= $valor_dificuldade == 'difícil' ? 'selected' : '' ?>>Difícil</option>
         </select>
-    </div>
+    </div> 
+
+    <div class="grupo-formulario">
+    <label for="categoria_id">Categoria:</label>
+    <select id="categoria_id" name="categoria_id">
+        <option value="">Selecione uma categoria</option>
+
+
+        <?php 
+        if (isset($categorias)) {
+            foreach ($categorias as $categoria): 
+                $selecionado = ($categoria['id'] == $valor_categoria_id) ? 'selected' : '';
+        ?>
+
+            <option value="<?= htmlspecialchars($categoria['id']) ?>" <?= $selecionado ?>>
+                <?= htmlspecialchars($categoria['nome']) ?>
+            </option>
+       
+
+       <?php 
+            endforeach; 
+        }
+        ?>
+
+
+    </select>
+</div>
+
+<div class="grupo-formulario">
+    <label for="nova_categoria">Ou crie uma nova categoria:</label>
+    <input type="text" id="nova_categoria" name="nova_categoria" placeholder="Ex: Sobremesas, Lanches, etc.">
+    <small>Deixe em branco se você selecionou uma categoria da lista acima.</small>
+</div>
     
     <div class="acoes-formulario">
         <button type="submit" class="btn-principal">Salvar Receita</button>
         <a href="/?pagina=receitas" class="btn-secundario">Cancelar</a>
     </div>
+
+    
 </form>
 
 <style>
