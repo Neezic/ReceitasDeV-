@@ -25,10 +25,8 @@
                 <h2>Crie sua Conta</h2>
 
                 <?php
-                // Bloco de PHP para exibir a mensagem de erro, se ela existir na sessão.
                 if (isset($_SESSION['mensagem_erro'])) {
                     echo "<div class='alerta erro'>" . htmlspecialchars($_SESSION['mensagem_erro']) . "</div>";
-                    // É crucial limpar a mensagem da sessão depois de exibi-la, para que ela não apareça novamente.
                     unset($_SESSION['mensagem_erro']);
                 }
                 ?>

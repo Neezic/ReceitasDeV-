@@ -61,48 +61,26 @@ class Receita {
     }
 
 
-    // Dentro da classe Receita em Model/Receita.php
 
     public function criar(array $dados) {
-    // Inicia a transação
-    $this->pdo->beginTransaction();
+        $query = "INSERT INTO " . $this->tabela . " 
+        (usuario_id, titulo, ingredientes, modo_preparo, dificuldade, categoria_id) 
+        VALUES 
+        (:usuario_id, :titulo, :ingredientes, :modo_preparo, :dificuldade, :categoria_id)";
 
-    try {
-        // 1. Insere a receita na tabela 'receitas'
-        $queryReceita = "INSERT INTO receitas (usuario_id, titulo, ingredientes, modo_preparo, dificuldade,categoria_id) 
-                         VALUES (:usuario_id, :titulo, :ingredientes, :modo_preparo, :dificuldade: categoria_id)";
+        $stmt = $this->pdo->prepare($query);
 
-        $stmtReceita = $this->pdo->prepare($queryReceita);
-        $stmtReceita->bindValue(':usuario_id', $dados['usuario_id'], PDO::PARAM_INT);
-        $stmtReceita->bindValue(':titulo', htmlspecialchars(strip_tags($dados['titulo'])));
-        $stmtReceita->bindValue(':ingredientes', htmlspecialchars(strip_tags($dados['ingredientes'])));
-        $stmtReceita->bindValue(':modo_preparo', htmlspecialchars(strip_tags($dados['modo_preparo'])));
-        $stmtReceita->bindValue(':dificuldade', htmlspecialchars(strip_tags($dados['dificuldade'])));
-        $stmtReceita->bindValue(':categoria_id', htmlspecialchars(strip_tags($dados['categoria_id'])));
-        $stmtReceita->execute();
-        
-        // Pega o ID da receita que acabamos de criar
-        $receitaId = $this->pdo->lastInsertId();
+        $stmt->bindValue(':usuario_id', $dados['usuario_id']);
+        $stmt->bindValue(':titulo', htmlspecialchars(strip_tags($dados['titulo'])));
+        $stmt->bindValue(':ingredientes', htmlspecialchars(strip_tags($dados['ingredientes'])));
+        $stmt->bindValue(':modo_preparo', htmlspecialchars(strip_tags($dados['modo_preparo'])));
+        $stmt->bindValue(':dificuldade', htmlspecialchars(strip_tags($dados['dificuldade'])));
+        $stmt->bindValue(':categoria_id', $dados['categoria_id']);
 
-        // 2. Insere a relação na tabela 'receita_categoria'
-        $queryCategoria = "INSERT INTO receita_categoria (receita_id, categoria_id) VALUES (:receita_id, :categoria_id)";
-        $stmtCategoria = $this->pdo->prepare($queryCategoria);
-        $stmtCategoria->bindValue(':receita_id', $receitaId, PDO::PARAM_INT);
-        $stmtCategoria->bindValue(':categoria_id', $dados['categoria_id'], PDO::PARAM_INT);
-        $stmtCategoria->execute();
-
-        // Se tudo deu certo, confirma as operações
-        $this->pdo->commit();
-        
-        return $receitaId; // Retorna o ID da nova receita
-
-    } catch (Exception $e) {
-        // Se algo deu errado, desfaz tudo
-        $this->pdo->rollBack();
-        error_log("Erro ao criar receita: " . $e->getMessage()); // Opcional: logar o erro
-        return false;
+        return $stmt->execute();
     }
-}
+
+
     
 
 

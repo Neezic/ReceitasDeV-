@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receitas</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>assets/css/style.css">
 </head>
 
 <body>
@@ -61,18 +61,17 @@
                         </p>
                         <div class="receita-resumo">
                             <?php
-                            // Pega o modo de preparo completo
                             $modo_preparo_completo = $receita['modo_preparo'];
 
-                            // Define um limite de caracteres para o resumo
+                            
                             $limite_caracteres = 1000;
 
-                            // Cria o resumo
+                            
                             if (strlen($modo_preparo_completo) > $limite_caracteres) {
-                                // Se o texto for longo, corta e adiciona "..."
+                                
                                 $resumo = substr($modo_preparo_completo, 0, $limite_caracteres) . '...';
                             } else {
-                                // Se for curto, exibe o texto completo
+                                
                                 $resumo = $modo_preparo_completo;
                             }
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'Config/banco.php';
 require_once 'Model/Usuario.php';
 require_once 'Config/csrf.php';
@@ -89,7 +90,7 @@ class AuthController{
         if (strlen($senha) < 6) {
         $erros[] = "A senha deve ter no mínimo 6 caracteres.";
         }
-        if ($senha !== $senha_confirmacao) { // Requer o campo do Passo 2
+        if ($senha !== $senha_confirmacao) { 
         $erros[] = "As senhas não coincidem.";
         }
 
@@ -122,6 +123,88 @@ class AuthController{
     public function logout() {
         session_destroy();
         header('Location: ' . BASE_URL . '?pagina=home');
+        exit;
+    }
+
+
+
+    public function solicitarRecuperacao() {
+        $csrf_token = gerar_token_csrf();
+        require 'View/auth/solicitar_recuperacao.php';
+    }
+    
+    public function verificarDados() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . '?pagina=login&acao=solicitarRecuperacao');
+            exit;
+        }
+        if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
+            $_SESSION['erro'] = "Erro de validação de segurança.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=solicitarRecuperacao');
+            exit;
+        }
+    
+        $cpf = $_POST['cpf'] ?? '';
+        $data_nascimento = $_POST['data_nascimento'] ?? '';
+    
+        $usuario = $this->usuarioModel->buscarPorCpfEDob($cpf, $data_nascimento);
+    
+        if ($usuario) {
+            $_SESSION['usuario_recuperacao_id'] = $usuario['id'];
+            header('Location: ' . BASE_URL . '?pagina=login&acao=redefinirSenha');
+        } else {
+            
+            $_SESSION['erro'] = "Dados não encontrados. Verifique seu CPF e data de nascimento.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=solicitarRecuperacao');
+        }
+        exit;
+    }
+    
+    public function redefinirSenha() {
+        if (!isset($_SESSION['usuario_recuperacao_id'])) {
+            header('Location: ' . BASE_URL . '?pagina=login');
+            exit;
+        }
+        $csrf_token = gerar_token_csrf();
+        require 'View/auth/redefinir_senha.php';
+    }
+    public function atualizarSenha() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['usuario_recuperacao_id'])) {
+            header('Location: ' . BASE_URL . '?pagina=login');
+            exit;
+        }
+        if (!validar_token_csrf($_POST['csrf_token'] ?? null)) {
+            $_SESSION['erro'] = "Erro de validação de segurança.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=redefinirSenha');
+            exit;
+        }
+    
+        $senha = $_POST['senha'] ?? '';
+        $senha_confirmacao = $_POST['senha_confirmacao'] ?? '';
+    
+        if (strlen($senha) < 6) {
+            $_SESSION['erro'] = "A nova senha deve ter no mínimo 6 caracteres.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=redefinirSenha');
+            exit;
+        }
+        if ($senha !== $senha_confirmacao) {
+            $_SESSION['erro'] = "As senhas não coincidem.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=redefinirSenha');
+            exit;
+        }
+    
+        $id_usuario = $_SESSION['usuario_recuperacao_id'];
+        $sucesso = $this->usuarioModel->atualizarSenha($id_usuario, $senha);
+    
+        unset($_SESSION['usuario_recuperacao_id']);
+    
+        if ($sucesso) {
+            $_SESSION['sucesso'] = "Senha redefinida com sucesso! Você já pode fazer o login.";
+            header('Location: ' . BASE_URL . '?pagina=login');
+        } else {
+            $_SESSION['erro'] = "Ocorreu um erro ao atualizar sua senha. Tente novamente.";
+            header('Location: ' . BASE_URL . '?pagina=login&acao=redefinirSenha');
+        }
         exit;
     }
 }

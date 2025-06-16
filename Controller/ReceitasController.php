@@ -24,14 +24,12 @@ class ReceitasController {
         $termo_busca = $_GET['busca'] ?? null;
         $receitas = [];
 
-        // Se houver um termo de busca, chama o método de busca no model
         if ($termo_busca) {
-        // Remove espaços em branco extras do termo
         $termo_busca = trim($termo_busca);
-        // Chama o novo método que vamos criar no model
+        
         $receitas = $this->receitaModel->buscarPorTermo($termo_busca);
         } else {
-        // Se não houver busca, lista todas as receitas como antes
+        
         $receitas = $this->receitaModel->listarTodas();
         }
     
@@ -71,7 +69,7 @@ class ReceitasController {
         exit;
         }
     
-        $categoria_id = $_POST['categoria_id'] ?? null;// pega os dados da categoria do formulário
+        $categoria_id = $_POST['categoria_id'] ?? null;
         $nova_categoria = trim($_POST['nova_categoria'] ?? '');
 
         if (!empty($nova_categoria)) {
@@ -116,14 +114,14 @@ class ReceitasController {
             header("Location: ". BASE_URL ."?pagina=receitas&acao=editar&id=$id");
             exit;
         }   
-        if ($id === null) { header("Location: /?pagina=receitas"); exit; }
+        if ($id === null) { header("Location: ".BASE_URL."?pagina=receitas"); exit; }
         $idReceita = (int)$id;
 
 
         if (!isset($_SESSION['usuario'])) { 
             header("Location: ". BASE_URL ."?pagina=login");
             exit;
-         }
+        }
         $idUsuarioLogado = $_SESSION['usuario']['id'];
 
         if (empty($_POST['titulo']) || empty($_POST['ingredientes']) || empty($_POST['modo_preparo'])) {

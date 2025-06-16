@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($receita['titulo']) ?></title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>assets/css/style.css">
     <style>
-        /* Estilos específicos para a página de visualização da receita */
         .receita-detalhe { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 1px 6px rgb(0 0 0 / 0.12); }
         .receita-detalhe h1 { color: #d35400; margin-bottom: 20px; }
         .receita-detalhe h3 { color: #f37021; margin-top: 25px; margin-bottom: 10px; border-bottom: 2px solid #fff3e0; padding-bottom: 5px; }
@@ -20,20 +19,20 @@
         <h1>Site de Receitas</h1>
         <nav>
             <ul>
-                <li><a href="<?=BASE_URL?>?pagina=home">Início</a></li>
+                <li><a href="<?php echo BASE_URL?>?pagina=home">Início</a></li>
         
-                <li><a href="<?=BASE_URL?>?pagina=sobre">Sobre</a></li>
+                <li><a href="<?php echo BASE_URL?>?pagina=sobre">Sobre</a></li>
         
                 <?php if (isset($_SESSION['usuario'])): ?>
                 
-                    <li><a href="<?= BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
+                    <li><a href="<?php echo  BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
                 
-                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
+                    <li><a href="<?php echo  BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
 
                 <?php else: ?>
 
-                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
-                    <li><a href="<?= BASE_URL ?>?pagina=login">Login</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=login">Login</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -50,8 +49,8 @@
 
             <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['id'] == $receita['usuario_id']): ?>
                 <div class="receita-acoes" style="margin-bottom: 20px;">
-                    <a href="<?= BASE_URL ?>?pagina=receitas&acao=editar&id=<?= $receita['id'] ?>" class="btn-editar">Editar Receita</a>
-                    <form method="POST" action="<?= BASE_URL ?>?pagina=receitas&acao=deletar" style="display: inline;" onsubmit="return confirm('Tem certeza?');">
+                    <a href="<?php echo BASE_URL ?>?pagina=receitas&acao=editar&id=<?= $receita['id'] ?>" class="btn-editar">Editar Receita</a>
+                    <form method="POST" action="<?php echo BASE_URL ?>?pagina=receitas&acao=deletar" style="display: inline;" onsubmit="return confirm('Tem certeza?');">
                         <input type="hidden" name="id" value="<?= $receita['id'] ?>">
                         <input type="hidden" name="csrf_token" value="<?= gerar_token_csrf() ?>">
                         <button type="submit" class="btn-excluir">Excluir Receita</button>
@@ -63,7 +62,6 @@
                 <h3>Ingredientes</h3>
                 <ul>
                     <?php 
-                    // Transforma a string de ingredientes em uma lista
                     $ingredientes = explode("\n", $receita['ingredientes']);
                     foreach ($ingredientes as $ingrediente) {
                         echo "<li>" . htmlspecialchars(trim($ingrediente)) . "</li>";

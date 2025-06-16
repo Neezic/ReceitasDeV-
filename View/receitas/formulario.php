@@ -15,7 +15,7 @@ $valor_dificuldade = $modo_edicao ? $receita['dificuldade'] : 'médio';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $titulo_pagina ?></title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>assets/css/style.css">
 </head>
 
 <body>
@@ -23,20 +23,20 @@ $valor_dificuldade = $modo_edicao ? $receita['dificuldade'] : 'médio';
         <h1>Site de Receitas</h1>
         <nav>
             <ul>
-                <li><a href="<?= BASE_URL ?>?pagina=home">Início</a></li>
+                <li><a href="<?php echo BASE_URL ?>?pagina=home">Início</a></li>
 
-                <li><a href="<?= BASE_URL ?>?pagina=sobre">Sobre</a></li>
+                <li><a href="<?php echo BASE_URL ?>?pagina=sobre">Sobre</a></li>
 
                 <?php if (isset($_SESSION['usuario'])): ?>
 
-                    <li><a href="<?= BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=receitas&acao=criar">Criar Receita</a></li>
 
-                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=login&acao=logout">Sair (<?= htmlspecialchars($_SESSION['usuario']['nome']) ?>)</a></li>
 
                 <?php else: ?>
 
-                    <li><a href="<?= BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
-                    <li><a href="<?= BASE_URL ?>?pagina=login">Login</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=login&acao=cadastro">Cadastro</a></li>
+                    <li><a href="<?php echo BASE_URL ?>?pagina=login">Login</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

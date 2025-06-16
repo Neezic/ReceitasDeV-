@@ -1,4 +1,4 @@
-/* Reset básico, removendo margens e esp.. fonte padrao, box sizing p controlar o tamanho */
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -7,19 +7,19 @@
     color: #333;
   }
   
-  body /*definir o fundo*/  {
+  body {
     background: #fff8f0; /* bege clarinho, aconchegante */
     line-height: 1.5;
     min-height: 100vh;
-    display: flex; /* espaçamento bonitinho e estrutura flex p ocupar td */
-    flex-direction: column; /*direção coluna */ 
+    display: flex;
+    flex-direction: column;
   }
   
   /* HEADER */
   header, footer {
     background: #cc4e00b7; /* cor laranja quente, tipo o Tudo Gostoso */
     color: white;
-    padding: 15px 30px; /* definir a aparecencia cabe, rodap. */
+    padding: 15px 30px;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
   }
   
@@ -29,7 +29,7 @@
     letter-spacing: 1.5px;
   }
   
-  nav ul /* remove os marcadores d list, menu horizontal, efeito hover */ {
+  nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
@@ -82,7 +82,7 @@
     background-color: #d35400;
   }
   
-  /* MAIN conteudo princ. centraliza */
+  /* MAIN */
   main {
     flex-grow: 1;
     max-width: 960px;
@@ -90,7 +90,7 @@
     padding: 0 20px;
   }
   
-  /* seção destaque bloco destaq, bordas red, sombra */
+  /* seção destaque */
   #destaque {
     background-color: #fff3e0;
     padding: 25px 20px;
@@ -109,7 +109,7 @@
   #receitas-main h2 {
     margin-bottom: 15px;
     font-weight: 700;
-    color: #f37021; /* fundo branco, sombra e mais hover */
+    color: #f37021;
   }
   
   #receitas-main .receita {
@@ -197,7 +197,7 @@
     background-color: #d35400;
   }
   
-  /* mensagem de erro  alertas fundo red texto destaq */
+  /* mensagem de erro */
   .alerta.erro {
     background-color: #f8d7da;
     color: #842029;
@@ -220,7 +220,7 @@
   }
   
   /* Responsivo simples */
-  @media (max-width: 600px) /* tela c-d 600px larg, layout da nav, search, busca, form, */ {
+  @media (max-width: 600px) {
     nav ul {
       flex-direction: column;
       gap: 10px;

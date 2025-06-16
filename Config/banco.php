@@ -1,17 +1,16 @@
 <?php
-define('BASE_URL', '/ReceitasDeV-/');
 
-$host = 'localhost:3306'; // mudar a porta conforme for preciso 
-$dbname = 'receitas';
+$host = 'localhost:3307';
+$dbname = 'receitas_1';
 $user = 'root';
 $pass = '';
-$charset = 'utf8mb4';// suportar todas as letras e emojis
+$charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 
 $options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,// para o código quando ha um ero
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,// Retorna arrays associativo
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
 try {

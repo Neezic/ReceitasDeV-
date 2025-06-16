@@ -8,7 +8,7 @@ if (!isset($_GET['acao'])) {
     exit;
 }
 
-// Página "sobre"
+
 if ($_GET['acao'] == 'sobre') {
     include './View/sobre.php';
     exit;
